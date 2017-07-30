@@ -24,8 +24,8 @@ define([
 
         // If nothing was found internally, try to fetch any
         // data from the HTML5 data-* attribute
-        if (data === undefined && elem.nodeType === 1) {
-            name = "data-" + key.replace(rmultiDash, "-$&").toLowerCase();
+        if (data === undefined && elem.nodeType === 1) {//如果未传入data且选择器选中了元素
+            name = "data-" + key.replace(rmultiDash, "-$&").toLowerCase();//取
             data = elem.getAttribute(name);
 
             if (typeof data === "string") {
@@ -52,10 +52,68 @@ define([
     jQuery.extend({
         hasData: function(elem) {
             return dataUser.hasData(elem) || dataPriv.hasData(elem);
+            //引用函数：Data构造函数实例dataUser的hasData
+            // hasData: function( owner ) {
+        	// 	var cache = owner[ this.expando ];// this.expando在Data的构造函数里被赋值为jQuery.expando + Data.uid++,jQuery.expando是个随机数，每次清空内存后会重置，Data.uid会从1开始累加
+            //
+        	// 	return cache !== undefined && !jQuery.isEmptyObject( cache );
+        	// }
         },
 
         data: function(elem, name, data) {
             return dataUser.access(elem, name, data);
+            //引用函数：
+            //  access: function( owner, key, value ) {
+            //
+        		// 以下两种情况:
+        		//
+        		//   1. key === undefined
+        		//   2. ( key && typeof key === "string" ) && value === undefined
+        		//
+        		// Take the "read" path and allow the get method to determine
+        		// which value to return, respectively either:
+        		//
+        		//   1. The entire cache object
+        		//   2. The data stored at the key
+        		//
+        	// 	if ( key === undefined ||
+        	// 			( ( key && typeof key === "string" ) && value === undefined ) ) {
+            //
+        	// 		return this.get( owner, key );
+        	// 	}
+            //
+        		// When the key is not a string, or both a key and value
+        		// are specified, set or extend (existing objects) with either:
+        		//
+        		//   1. An object of properties
+        		//   2. A key and value
+        		//
+        	// 	this.set( owner, key, value );
+                //引用函数：set
+                // set: function( owner, data, value ) {
+                //         var prop,
+                //             cache = this.cache( owner );
+                //
+                //         // Handle: [ owner, key, value ] args
+                //         // Always use camelCase key (gh-2257)
+                //         if ( typeof data === "string" ) {
+                //             cache[ jQuery.camelCase( data ) ] = value;
+                //
+                //         // Handle: [ owner, { properties } ] args
+                //         } else {
+                //
+                //             // Copy the properties one-by-one to the cache object
+                //             for ( prop in data ) {
+                //                 cache[ jQuery.camelCase( prop ) ] = data[ prop ];
+                //             }
+                //         }
+                //         return cache;
+                // },
+            //
+        		// Since the "set" path can have two possible entry points
+        		// return the expected data based on which path was taken[*]
+        	// 	return value !== undefined ? value : key;
+        	// },
         },
 
         removeData: function(elem, name) {
@@ -73,11 +131,11 @@ define([
         }
     });
 
-    jQuery.fn.extend({
+    jQuery.fn.extend({//为jq实例添加方法
         data: function(key, value) {
             var i, name, data,
                 elem = this[0],
-                attrs = elem && elem.attributes;
+                attrs = elem && elem.attributes;//用&&短路的方式赋值
 
             // Gets all values
             if (key === undefined) {
@@ -113,6 +171,66 @@ define([
             }
 
             return access(this, function(value) {
+                // var access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
+                // 	var i = 0,
+                // 		len = elems.length,
+                // 		bulk = key == null;
+                //
+                // 	// Sets many values
+                // 	if ( jQuery.type( key ) === "object" ) {
+                // 		chainable = true;
+                // 		for ( i in key ) {
+                // 			access( elems, fn, i, key[ i ], true, emptyGet, raw );
+                // 		}
+                //
+                // 	// Sets one value
+                // 	} else if ( value !== undefined ) {
+                // 		chainable = true;
+                //
+                // 		if ( !jQuery.isFunction( value ) ) {
+                // 			raw = true;
+                // 		}
+                //
+                // 		if ( bulk ) {
+                //
+                // 			// Bulk operations run against the entire set
+                // 			if ( raw ) {
+                // 				fn.call( elems, value );
+                // 				fn = null;
+                //
+                // 			// ...except when executing function values
+                // 			} else {
+                // 				bulk = fn;
+                // 				fn = function( elem, key, value ) {
+                // 					return bulk.call( jQuery( elem ), value );
+                // 				};
+                // 			}
+                // 		}
+                //
+                // 		if ( fn ) {
+                // 			for ( ; i < len; i++ ) {
+                // 				fn(
+                // 					elems[ i ], key, raw ?
+                // 					value :
+                // 					value.call( elems[ i ], i, fn( elems[ i ], key ) )
+                // 				);
+                // 			}
+                // 		}
+                // 	}
+                //
+                // 	if ( chainable ) {
+                // 		return elems;
+                // 	}
+                //
+                // 	// Gets
+                // 	if ( bulk ) {
+                // 		return fn.call( elems );
+                // 	}
+                //
+                // 	return len ? fn( elems[ 0 ], key ) : emptyGet;
+                // };
+                //
+                // return access;
                 var data, camelKey;
 
                 // The calling jQuery object (element matches) is not empty

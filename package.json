@@ -1,0 +1,23 @@
+{
+  "name": "source-code-analysis",
+  "version": "1.0.0",
+  "description": "jQuery的AMD？CMD实现：使用define来包裹模块，第一个参数是数组，获取依赖的模块，第二个参数是函数方法，将依赖传入",
+  "main": "jquery.data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moux1024/source-code-analysis.git"
+  },
+  "keywords": [
+    "jquery",
+    "data"
+  ],
+  "author": "xt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moux1024/source-code-analysis/issues"
+  },
+  "homepage": "https://github.com/moux1024/source-code-analysis#readme"
+}
